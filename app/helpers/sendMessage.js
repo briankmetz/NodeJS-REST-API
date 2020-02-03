@@ -1,7 +1,9 @@
 const { db, Message, Thread, UserProfile, UserThread } = cRequire( 'db');
 const customError = cRequire('customError');
 
-async function sendMessage(userKey, sendToUserKey, message, meetingId) { // send a message, checking if a thread already exists
+// send a message from one user to another, checking if a thread already exists between the two and creating it if it doesn't
+// messages can be created between users in several places so this is highly reusable code
+async function sendMessage(userKey, sendToUserKey, message, meetingId) {
 	if(userKey == sendToUserKey) throw new customError.UnprocessableError('Cannot send messages to yourself');
 	
 	const userId = await UserProfile.lookupByKey(userKey);
@@ -11,7 +13,7 @@ async function sendMessage(userKey, sendToUserKey, message, meetingId) { // send
 	const threadId = await Thread.existingThread(userKey, sendToUserKey);
 	
 	let thread
-	if(threadId){
+	if(threadId){ // thread exists between these users
 		// create message in thread
 		const newMessage = {
 			id: threadId, // thread already exists so it requires a relate instead of an insert. Hence the existing database id is referenced in the graph insert
@@ -32,7 +34,7 @@ async function sendMessage(userKey, sendToUserKey, message, meetingId) { // send
 			user_id: userId,
 			thread_id: threadId
 		})
-	}else{
+	}else{ // thread does not exist between these users
 		// create new thread with message
 		const newThread = {
 			message: {

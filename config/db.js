@@ -4,6 +4,7 @@ const { Model } = require('objection');
 const config = cRequire('env');
 const db = cRequire('models');
 
+// create connection object using Knex & Objection
 const knex = Knex({
 	client: 'mysql',
 	connection: {

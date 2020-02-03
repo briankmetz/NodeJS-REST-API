@@ -1,5 +1,7 @@
 const httpStatus = require('http-status');
 
+// create custom error classes. error responses should be consistent accross the entire project
+// in production it should be impossible for the user to recieve an error that doesn't match one of these classes
 class CustomError extends Error {
 	constructor(message) {
 		super(message);

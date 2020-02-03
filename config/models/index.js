@@ -1,3 +1,4 @@
+//exports all models in a single location, probably a cleaner way of doing this
 const { Model } = require('objection');
 const Album = require('./pf_album');
 const Category = require('./pf_category');

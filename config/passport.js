@@ -21,4 +21,6 @@ passport.use('local-identity', new Strategy({ usernameField: 'email' }, async (e
 	}
 }));
 
+// TODO: a passport strategy for users who forgot their password
+
 module.exports = passport;

@@ -1,4 +1,6 @@
 // configures which columns get returned to the frontend for each data type (ie. all columns not listed will be masked)
+// very useful tool, if we wanted to return user id number with every user object we could do that by just unmasking it 
+// here instead of performing an exhaustive search through all endpoints to add the field manually.  
 
 //data types
 const categoryFields = ['key', 'name', 'created_at', 'updated_at', 'tags'];
@@ -19,7 +21,7 @@ const whitelabelFields = ['key', 'name', 'type', 'url', 'created_at', 'updated_a
 
 //matches data type name to its fields
 const keysToFields = {
-	attendee_categories: categoryFields, // to be removed soon
+	attendee_categories: categoryFields, // to be removed soon and replaced with a generic 'category' field
 	interest_categories: categoryFields,
 	offer_categories: categoryFields,
 	

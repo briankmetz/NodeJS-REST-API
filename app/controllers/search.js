@@ -4,6 +4,8 @@ const cleanup = lRequire('cleanup');
 const pagination = lRequire('pagination');
 const customError = cRequire('customError');
 
+// search attendees list of a conference
+// TODO: should be done through AWS Cloudsearch or similar service, not SQL LIKE query
 async function getAttendees(req, res) {
 	const identity = req.user;
 	const { query = '', tags, limit = 10, paging_token } = req.query;

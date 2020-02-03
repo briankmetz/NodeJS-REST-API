@@ -8,10 +8,12 @@ const genJWT = lRequire('util').genJWT;
 
 const moment = require('moment');
 
+// log the user into a specific conference
 async function login(req, res) {
 	const identity = req.user;
 	const { slug } = req.params;
-
+	
+	// check conference exists
 	const conference = await Conference.active()
 	.where({
 		'pf_conference.slug': slug
@@ -23,7 +25,8 @@ async function login(req, res) {
 	for(var i = 0; i < conference.dates.length; i++){ // parse datetime back into date
 		conference.dates[i].day = moment(conference.dates[i].day).format('YYYY-MM-DD');
 	}
-
+	
+	// check matching user exists for this conference
 	const user = await UserProfile.active()
 	.where({
 		identity_id: identity.id,
@@ -36,7 +39,8 @@ async function login(req, res) {
 	})
 	.first()
 	if(!user) throw new customError.ResourceNotFoundError('User');
-
+	
+	// determine roles for this user and generate JWT access token
 	const roleKeys = user.roles.map(role => role.key);
 	const accessToken = await genJWT(identity.key, user.key, conference.key, roleKeys);
 	
@@ -47,14 +51,17 @@ async function login(req, res) {
 		conference
 	}
 	
+	// cleanup data and send
 	const data = await cleanup(login);
 	res.jsend(data);
 }
 
+// sign a user up for a specific conference
 async function signup(req, res) {
 	const { slug } = req.params;
 	const { email, password, name } = req.body;
 	
+	// check conference exists
 	const conference = await Conference.active()
 	.where({
 		'pf_conference.slug': slug
@@ -67,6 +74,7 @@ async function signup(req, res) {
 		conference.dates[i].day = moment(conference.dates[i].day).format('YYYY-MM-DD');
 	}
 	
+	// verify email is not in use
 	const alreadyRegistered = await Identity.lookupByEmail(email);
 	if(alreadyRegistered) throw new customError.UnprocessableError('Email is already in use');
 	
@@ -78,6 +86,7 @@ async function signup(req, res) {
 	.first()
 	if(!role) throw new customError.ResourceNotFoundError('Role');
 	
+	// prepare new login identity and hash password
 	const hashedPassword = await Identity.hashPassword(password);
 		
 	const newIdentity = {
@@ -97,6 +106,7 @@ async function signup(req, res) {
 		}
 	}
 	
+	// insert identity & user profile
 	const identity = await Identity.query()
 	.insertGraphAndFetch(newIdentity)
 	
@@ -113,6 +123,7 @@ async function signup(req, res) {
 	.first()
 	if(!user) throw new customError.ResourceNotFoundError('User');
 	
+	// determine roles for this user and generate JWT access token
 	const roleKeys = user.roles.map(role => role.key);
 	const accessToken = await genJWT(identity.key, user.key, conference.key, roleKeys);
 	
@@ -123,10 +134,12 @@ async function signup(req, res) {
 		conference
 	}
 	
+	// cleanup data and send
 	const data = await cleanup(login);
 	res.jsend(data);
 	
-	emailLib.generateWelcomeEmail(user.key); // send welcome email
+	// send welcome email
+	emailLib.generateWelcomeEmail(user.key); 
 }
 
 async function emailInUse(req, res) {

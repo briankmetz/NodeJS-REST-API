@@ -1,3 +1,4 @@
+// simplifies importing from /config, /helper, or /lib by creating gloabl methods cRequire, hRequire and lRequire 
 const config = require('./env');
 
 // Config folder

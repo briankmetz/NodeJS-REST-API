@@ -4,6 +4,7 @@ const cleanup = lRequire('cleanup');
 const uploadLib = lRequire('upload');
 const customError = cRequire('customError');
 
+// upload an image to the user's album
 async function uploadImage(req, res) {
 	const identity = req.user;
 	const { type, image } = req.body;

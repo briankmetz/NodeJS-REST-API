@@ -13,6 +13,7 @@ const { CustomError, ResourceNotFoundError } = cRequire('customError');
 const { ValidationError } = require('express-validation');
 cRequire('passport'); // init passport strategies
 
+// init express
 const app = express();
 
 if (config.env === 'dev') {
@@ -50,12 +51,12 @@ app.use(function apiCall(req, res, next){
 })
 app.use('/', routes);
 
-// catch 404 and forward to error handler
+// catch 404 errors and forward to error handler
 app.use((req, res, next) => {
 	throw new ResourceNotFoundError('Endpoint')
 });
 
-// catch all errors and handle based on type
+// catch all other errors and handle based on error type
 app.use(function(err, req, res, next){
 	const result = {};
 

@@ -1,3 +1,4 @@
+//mounts all routes for v1.0 API
 const express = require('express');
 const authRoutes = require('./auth');
 const conferenceRoutes = require('./conference');

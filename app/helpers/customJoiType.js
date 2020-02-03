@@ -1,3 +1,4 @@
+// custom JOI types for reusably validating complex user input
 const Joi = require('joi');
 
 const imageMime = Joi.valid('image/jpeg', 'image/png');
@@ -8,6 +9,7 @@ const imageKeys = {
 	size: maxImageSize.required()
 }
 
+// defines the minimum requires for an image to pass input validation
 const image = Joi.object().keys(imageKeys)
 
 module.exports = {

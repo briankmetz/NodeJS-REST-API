@@ -3,6 +3,7 @@ const path = require('path');
 
 dotenv.config();
 
+// exports .env variables and sets default values for some fields
 module.exports = {
 	env: process.env.NODE_ENV,
 	port: process.env.NODE_PORT,

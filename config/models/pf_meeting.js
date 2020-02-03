@@ -139,7 +139,7 @@ class Meeting extends Model {
 	
 	static get modifiers() {
 		return {
-			// modifies eager to only return active meetings with this user, selects 'type' for this user not the model user
+			// modifies eager query to only return active meetings with a specified user. Be aware, the 'type' field returned is for the specified user, not the model user
 			withMe: (builder) => {
 				builder
 					.select('pf_meeting.*', 'j_um2.type as type')

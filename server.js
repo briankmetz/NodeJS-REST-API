@@ -8,8 +8,6 @@ const config = cRequire('env');
 const app = cRequire('express');
 const periodic = lRequire('periodic')
 
-var SESTransport = null;
-
 if (config.env === 'dev') {
 	global.ENV_DEBUG_STATE = true;
 }
@@ -17,7 +15,7 @@ if (config.env === 'dev') {
 process.setMaxListeners(200);
 
 
-// initialize http/https server
+// initialize http/https server; only uses https if ssl certificate path is provided
 let options;
 if (config.sslKeyPath != null && config.sslKeyPath != '' && config.sslCertPath != null && config.sslCertPath != '') {
 	options = { 
@@ -33,7 +31,7 @@ server.listen(config.port, () => {
 })
 
 
-// looping background functions
+// queued emails are released periodically in batches in case of sudden bursts in traffic
 const sendEmails = new CronJob('*/10 * * * * *', function(){
 	periodic.getAndSendEmail().catch((err) => { console.log(err) })
 })
