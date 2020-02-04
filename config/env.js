@@ -20,7 +20,6 @@ module.exports = {
 	},
 	jwtSecret: process.env.JWT_SECRET,
 	jwtAccessTokenTTL: process.env.JWT_ACCESS_TOKEN_TTL || '300d',
-	baseWebAppUrl: process.env.BASE_WEB_APP_URL,
 	aws: {
     config: {
       accessKeyId: process.env.AWS_ACCESS_KEY,
