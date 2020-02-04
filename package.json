@@ -28,7 +28,7 @@
     "joi": "^13.7.0",
     "joi-enums-extension": "^2.0.3",
     "jsonwebtoken": "^8.5.0",
-    "knex": "^0.16.3",
+    "knex": "^0.20.8",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
